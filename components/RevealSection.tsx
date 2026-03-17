@@ -53,7 +53,7 @@ export default function RevealSection() {
         <p className="font-body text-sm tracking-[0.15em] uppercase text-primary">Scratch to discover the date</p>
       </div>
 
-      <div className="flex gap-6 md:gap-10 relative z-10">
+      <div className="flex gap-4 md:gap-10 relative z-10">
         {["2", "August", "2026"].map((text, idx) => (
           <ScratchCircle key={idx} text={text} onReveal={handleCircleReveal} />
         ))}
@@ -134,7 +134,7 @@ function ScratchCircle({ text, onReveal }: { text: string; onReveal: () => void 
 
   return (
     <div className="relative flex flex-col items-center">
-      <div className="relative w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden shadow-md">
+      <div className="relative w-26 h-26 md:w-32 md:h-32 rounded-full overflow-hidden shadow-md">
         <div className="absolute inset-0 flex items-center justify-center bg-white">
           <span className="font-display text-2xl md:text-3xl text-primary">{text}</span>
         </div>
