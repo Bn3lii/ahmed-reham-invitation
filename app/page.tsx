@@ -5,6 +5,7 @@ import HeroSection from "@/components/HeroSection";
 import RevealSection from "@/components/RevealSection";
 import CountdownSection from "@/components/CountdownSection";
 import VenueSection from "@/components/VenueSection"
+import GuestMessageSection from "@/components/GuestMessageSection";
 import ThankYouSection from "@/components/ThankYouSection";
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
       <RevealSection />
       <CountdownSection />
       <VenueSection />
+      <GuestMessageSection />
       <ThankYouSection />
     </main>
   );
