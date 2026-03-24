@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 // ← ضع هنا الـ URL بعد نشر الـ Apps Script على Google
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzTrKEA-AfXkCOox8yqLVrpl6qpoxkbqX-sFC4qZt2I8lvKOd6JosjkDwObTEr294QF/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyygBuLsLZMinz8z7z_NJWc7p8Y2Yy0BSTjKJpD-GtKOTzZowrnFbi8bNU-BdaiNHai/exec";
 
 type Status = "idle" | "sending" | "success" | "error";
 
