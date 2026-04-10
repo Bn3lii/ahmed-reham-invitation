@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { MongoClient } from "mongodb";
+import { attachDatabasePool } from "@vercel/functions";
 
 const MONGODB_URI = process.env.MONGODB_URI!;
 
@@ -36,9 +38,19 @@ async function connectToDatabase() {
       bufferCommands: false,
     };
 
-    cachedDB.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      return mongoose;
-    });
+    cachedDB.promise = mongoose
+      .connect(MONGODB_URI, opts)
+      .then((mongooseInstance) => {
+        try {
+          // Optimize connection pool for Vercel Functions
+          attachDatabasePool(
+            mongooseInstance.connection.getClient() as MongoClient,
+          );
+        } catch (err) {
+          console.error("Failed to attach database pool", err);
+        }
+        return mongooseInstance;
+      });
   }
 
   try {
