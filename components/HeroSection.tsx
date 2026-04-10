@@ -104,7 +104,7 @@ export default function HeroSection() {
       {!isOpen && (
         <div className="absolute inset-0 z-5 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px] transition-opacity duration-700">
           <div className="flex flex-col items-center justify-center space-y-6 text-center px-4">
-            <h1 className="text-5xl md:text-6xl font-script text-white drop-shadow-lg">Ahmed & Reham</h1>
+            <h1 className="text-5xl md:text-6xl font-script text-white drop-shadow-lg" style={{ fontFamily: "var(--font-script-var)" }}>Ahmed & Reham</h1>
             <p className="text-sm md:text-base text-white/90 font-body tracking-[0.2em] uppercase drop-shadow">Wedding Invitation</p>
             <button
               onClick={handleOpen}
@@ -121,17 +121,17 @@ export default function HeroSection() {
         }`}>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="flex flex-col items-center text-center max-w-[55%] md:max-w-[45%] lg:max-w-[40%] px-4 pt-4">
-            <p className="font-display text-[8px] md:text-[10px] tracking-[0.15em] uppercase mb-4 text-primary">
+            <p className="font-display font-bold text-[8px] md:text-[12px] tracking-[0.15em] uppercase mb-4 text-primary" style={{ fontFamily: "var(--font-display-var)" }}>
               You are cordially invited to celebrate the wedding of
             </p>
-            <h1 className="font-script text-6xl md:text-7xl lg:text-8xl mb-0 leading-none text-primary">Ahmed</h1>
-            <span className="font-script text-3xl md:text-4xl text-primary">&</span>
-            <h1 className="font-script text-6xl md:text-7xl lg:text-8xl mb-10 leading-none text-primary">Reham</h1>
+            <h1 className="font-script text-6xl md:text-7xl lg:text-8xl mb-0 leading-none text-primary" style={{ fontFamily: "var(--font-script-var)" }}>Ahmed</h1>
+            <span className="font-script text-3xl md:text-4xl text-primary" style={{ fontFamily: "var(--font-script-var)" }}>&</span>
+            <h1 className="font-script text-6xl md:text-7xl lg:text-8xl mb-10 leading-none text-primary" style={{ fontFamily: "var(--font-script-var)" }}>Reham</h1>
           </div>
         </div>
 
         <div className="absolute bottom-40 left-0 right-0 flex justify-center px-4">
-          <p className="font-display text-[11px] md:text-sm tracking-[0.12em] uppercase leading-relaxed text-center max-w-[85%] md:max-w-[70%] lg:max-w-[60%] text-primary">
+          <p className="font-display font-bold text-[11px] md:text-sm tracking-[0.12em] uppercase leading-relaxed text-center max-w-[80%] md:max-w-[60%] lg:max-w-[50%] text-primary" style={{ fontFamily: "var(--font-display-var)" }}>
             We would like to invite you to celebrate with us the most special day of our lives. It would be an honor to have you present at this important moment.
           </p>
         </div>
@@ -141,7 +141,7 @@ export default function HeroSection() {
           className="absolute bottom-8 left-0 right-0 flex justify-center animate-bounce cursor-pointer z-10"
         >
           <div className="flex flex-col items-center">
-            <p className="font-display text-[10px] tracking-[0.2em] uppercase mb-2 text-primary">Scroll</p>
+            <p className="font-display text-[10px] tracking-[0.2em] uppercase mb-2 text-primary" style={{ fontFamily: "var(--font-display-var)" }}>Scroll</p>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5C2018" strokeWidth="1.5">
               <path d="M12 5v14M5 12l7 7 7-7" />
             </svg>

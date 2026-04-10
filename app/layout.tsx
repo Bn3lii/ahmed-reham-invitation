@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Great_Vibes, Montserrat } from "next/font/google";
+import { Cormorant_Garamond, Great_Vibes, Raleway } from "next/font/google";
 import "./globals.css";
 
 const displayFont = Cormorant_Garamond({
@@ -14,7 +14,7 @@ const scriptFont = Great_Vibes({
   weight: "400",
 });
 
-const bodyFont = Montserrat({
+const bodyFont = Raleway({
   variable: "--font-body-var",
   subsets: ["latin"],
   weight: ["300", "400", "500"],

@@ -44,7 +44,7 @@ export default function CountdownSection() {
         <TimeUnit value={timeLeft.seconds} label="Sec" />
       </div>
       <p className="font-body text-sm tracking-wide mt-10 text-primary">
-        until the big day
+        Until the big day
       </p>
     </section>
   );

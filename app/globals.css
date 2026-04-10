@@ -1,11 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #5C2018;
-  --color-secondary: #FAF8F5;
-  --font-display: var(--font-display-var), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-script: var(--font-script-var), cursive;
-  --font-body: var(--font-body-var), ui-sans-serif, system-ui, sans-serif;
+  --color-primary: #5c2018;
+  --color-secondary: #faf8f5;
 }
 
 :root {
@@ -16,4 +13,18 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  font-family: var(--font-body-var), sans-serif;
+}
+
+/* حل جذري عشان كل الفونتات تشتغل على الموقع كله بدون Inline Styles */
+.font-script {
+  font-family: var(--font-script-var), cursive !important;
+}
+
+.font-display {
+  font-family: var(--font-display-var), serif !important;
+}
+
+.font-body {
+  font-family: var(--font-body-var), sans-serif !important;
 }
