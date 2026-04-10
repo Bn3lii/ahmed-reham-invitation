@@ -2,27 +2,29 @@
 
 import { useState } from "react";
 
-// ← ضع هنا الـ URL بعد نشر الـ Apps Script على Google
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyygBuLsLZMinz8z7z_NJWc7p8Y2Yy0BSTjKJpD-GtKOTzZowrnFbi8bNU-BdaiNHai/exec";
+// URL API بدل Apps Script
+const API_URL = "/api/messages";
 
 type Status = "idle" | "sending" | "success" | "error";
 
 export default function GuestMessageSection() {
-  const [name, setName]       = useState("");
+  const [name, setName] = useState("");
   const [message, setMessage] = useState("");
-  const [status, setStatus]   = useState<Status>("idle");
+  const [status, setStatus] = useState<Status>("idle");
 
   const handleSubmit = async () => {
     if (!name.trim() || !message.trim()) return;
     setStatus("sending");
 
     try {
-      await fetch(SCRIPT_URL, {
-        method:  "POST",
-        mode:    "no-cors",
+      const response = await fetch(API_URL, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ name: name.trim(), message: message.trim() }),
+        body: JSON.stringify({ name: name.trim(), message: message.trim() }),
       });
+
+      if (!response.ok) throw new Error("Failed to send");
+
       setStatus("success");
       setName("");
       setMessage("");
@@ -46,7 +48,7 @@ export default function GuestMessageSection() {
       <div className="w-full max-w-sm md:max-w-md">
         <div className="border border-primary/20 rounded-2xl overflow-hidden">
 
-          <div className="h-[3px] bg-primary w-full" />
+          <div className="h-0.75 bg-primary w-full" />
 
           <div className="p-8 md:p-10 bg-white">
             {status === "success" ? (
@@ -105,7 +107,7 @@ export default function GuestMessageSection() {
             )}
           </div>
 
-          <div className="h-[1px] bg-primary/10 w-full" />
+          <div className="h-px bg-primary/10 w-full" />
         </div>
 
         <p className="font-script text-xl text-primary/40 text-center mt-5">
@@ -128,7 +130,7 @@ function SuccessState({ onReset }: { onReset: () => void }) {
       <h3 className="font-script text-3xl md:text-4xl text-primary mb-3">
         Thank You
       </h3>
-      <p className="font-body text-sm text-primary/60 leading-relaxed mb-7 max-w-[240px]">
+      <p className="font-body text-sm text-primary/60 leading-relaxed mb-7 max-w-60">
         Your message has been received and will be treasured forever.
       </p>
       <button
