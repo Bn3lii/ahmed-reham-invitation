@@ -7,14 +7,24 @@ export default function AudioPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
+    const audioEl = audioRef.current;
+    if (!audioEl) return;
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+
+    audioEl.addEventListener("play", handlePlay);
+    audioEl.addEventListener("pause", handlePause);
+
     // Attempt to auto-play on mount, though browsers often block this
-    if (audioRef.current) {
-      audioRef.current.play().then(() => {
-        setIsPlaying(true);
-      }).catch((err) => {
-        console.log("Autoplay blocked, user interaction required:", err);
-      });
-    }
+    audioEl.play().catch((err) => {
+      console.log("Autoplay blocked, user interaction required:", err);
+    });
+
+    return () => {
+      audioEl.removeEventListener("play", handlePlay);
+      audioEl.removeEventListener("pause", handlePause);
+    };
   }, []);
 
   const togglePlay = () => {
@@ -24,7 +34,6 @@ export default function AudioPlayer() {
       } else {
         audioRef.current.play();
       }
-      setIsPlaying(!isPlaying);
     }
   };
 

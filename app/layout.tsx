@@ -1,20 +1,23 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Dancing_Script, Inter } from "next/font/google";
+import { Cormorant_Garamond, Great_Vibes, Montserrat } from "next/font/google";
 import "./globals.css";
 
-const playfair = Playfair_Display({
+const displayFont = Cormorant_Garamond({
   variable: "--font-display-var",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
 });
 
-const dancingScript = Dancing_Script({
+const scriptFont = Great_Vibes({
   variable: "--font-script-var",
   subsets: ["latin"],
+  weight: "400",
 });
 
-const inter = Inter({
+const bodyFont = Montserrat({
   variable: "--font-body-var",
   subsets: ["latin"],
+  weight: ["300", "400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -30,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning
-        className={`${playfair.variable} ${dancingScript.variable} ${inter.variable} font-body antialiased`}
+        className={`${displayFont.variable} ${scriptFont.variable} ${bodyFont.variable} font-body antialiased`}
       >
         {children}
       </body>

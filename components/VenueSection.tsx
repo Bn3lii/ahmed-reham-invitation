@@ -20,15 +20,15 @@ export default function VenueSection() {
       </div>
       <div className="text-center mb-4">
         <h2 className="font-display text-3xl md:text-4xl lg:text-5xl tracking-wide leading-tight text-primary">
-          Villa Medicea di Artimino
+          Al Loaloaa Village Halls - Fayoum
         </h2>
       </div>
       <div className="text-center mb-8">
         <p className="font-body text-xs tracking-[0.2em] uppercase text-primary">
-          Via di Papa Leone X, 28
+          Qarun Lake - Before Helnan Auberge Hotel
         </p>
         <p className="font-body text-xs tracking-[0.2em] uppercase text-primary">
-          Artimino, Florencia
+          Faiyum, Egypt
         </p>
       </div>
       <div className="text-center mb-10">
