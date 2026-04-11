@@ -99,6 +99,18 @@ export default function RevealSection() {
         }`}>
         We&apos;re getting married!
       </p>
+
+      {/* مؤشر النزول بعد السكراتش */}
+      <div className={`absolute bottom-6 left-0 right-0 flex justify-center animate-bounce z-10 transition-opacity duration-1000 delay-1000 ${
+        revealedCount === 3 ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}>
+        <div className="flex flex-col items-center text-primary">
+          <p className="font-display text-[10px] tracking-[0.2em] uppercase mb-1">Scroll</p>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+        </div>
+      </div>
     </section>
   );
 }

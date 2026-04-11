@@ -11,7 +11,7 @@ export default function VenueSection() {
       <div className="max-w-2xl w-full mb-8">
         {/* We use standard img for missing assets so it doesn't hard-crash Next.js Image if not found */}
         <Image
-          src="/new-place.jpg" 
+          src="/place-new-one.jpg" 
           alt="Venue Illustration" 
           className="w-full h-auto text-primary text-center italic text-sm"
           width={500}
