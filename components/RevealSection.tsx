@@ -6,6 +6,42 @@ import confetti from "canvas-confetti";
 export default function RevealSection() {
   const [revealedCount, setRevealedCount] = useState(0);
   const hasConfettiFired = useRef(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // يفتح السكرول لما يخلص السكراتش
+  useEffect(() => {
+    if (revealedCount === 3) {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    }
+  }, [revealedCount]);
+
+  // يقفل السكرول أول ما يوصل للسيكشن (لو لسه مخلصش)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !hasConfettiFired.current) {
+          document.body.style.overflow = "hidden";
+          document.body.style.touchAction = "none";
+          // بنعمل ديلاي خفيف عشان ما يقطعش سلاسة النزول
+          setTimeout(() => {
+            sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+          }, 50);
+        }
+      },
+      { threshold: 0.99 } // يشتغل أول ما نص السيكشن يظهر
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    };
+  }, []);
 
   const handleCircleReveal = useCallback(() => {
     setRevealedCount((prev) => prev + 1);
@@ -45,9 +81,9 @@ export default function RevealSection() {
   }, [revealedCount]);
 
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center py-8 px-8 bg-secondary relative overflow-hidden">
+    <section ref={sectionRef} className="min-h-screen flex flex-col items-center justify-center py-8 px-8 bg-secondary relative overflow-hidden">
       <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#5C2018 2px, transparent 2px)', backgroundSize: '40px 40px' }} />
-      
+
       <div className="text-center mb-8 relative z-10">
         <h2 className="font-script text-4xl md:text-5xl mb-4 text-primary">Reveal</h2>
         <p className="font-body text-sm tracking-[0.15em] uppercase text-primary">Scratch to discover the date</p>
@@ -59,9 +95,8 @@ export default function RevealSection() {
         ))}
       </div>
 
-      <p className={`font-script text-2xl md:text-3xl mt-8 text-primary relative z-10 transition-all duration-1000 ${
-        revealedCount === 3 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-      }`}>
+      <p className={`font-script text-2xl md:text-3xl mt-8 text-primary relative z-10 transition-all duration-1000 ${revealedCount === 3 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+        }`}>
         We&apos;re getting married!
       </p>
     </section>
@@ -82,7 +117,7 @@ function ScratchCircle({ text, onReveal }: { text: string; onReveal: () => void 
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     let isDrawing = false;
-    
+
     const scratch = (x: number, y: number) => {
       ctx.globalCompositeOperation = "destination-out";
       ctx.beginPath();
@@ -138,10 +173,10 @@ function ScratchCircle({ text, onReveal }: { text: string; onReveal: () => void 
         <div className="absolute inset-0 flex items-center justify-center bg-white">
           <span className="font-display text-2xl md:text-3xl text-primary">{text}</span>
         </div>
-        <canvas 
+        <canvas
           ref={canvasRef}
-          width="150" 
-          height="150" 
+          width="150"
+          height="150"
           className="absolute inset-0 w-full h-full cursor-pointer transition-opacity duration-700"
           style={{ touchAction: "none" }}
         />
