@@ -1,11 +1,10 @@
 import connectToDatabase from "@/lib/mongodb";
 import Message from "@/lib/models/Message";
 
-export const dynamic = "force-dynamic"; // عشان يجيب الداتا جديدة دايماً وميعملش كاش
+export const dynamic = "force-dynamic";
 
 export default async function MessagesDashboard() {
   await connectToDatabase();
-  // نجيب الرسايل من الأحدث للأقدم
   const messages = await Message.find().sort({ createdAt: -1 });
 
   return (
