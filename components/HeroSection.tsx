@@ -7,7 +7,17 @@ export default function HeroSection() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isVideoFinished, setIsVideoFinished] = useState(false);
+  const [curtainLoaded, setCurtainLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Only start buffering the video once the closed-curtain image has painted,
+  // so the first screen isn't competing with a multi-MB download.
+  useEffect(() => {
+    if (!curtainLoaded || !videoRef.current) return;
+    const videoEl = videoRef.current;
+    videoEl.preload = "auto";
+    videoEl.load();
+  }, [curtainLoaded]);
 
   // Handle scroll to top on refresh
   useEffect(() => {
@@ -68,6 +78,8 @@ export default function HeroSection() {
         src="/curtain-closed-Bpkadld4.jpg"
         alt="Closed Curtain"
         fill
+        sizes="100vw"
+        onLoad={() => setCurtainLoaded(true)}
         className={`absolute inset-0 w-full h-full object-cover z-4 transition-opacity duration-700 ${!isVideoPlaying && !isVideoFinished ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         priority
@@ -81,8 +93,8 @@ export default function HeroSection() {
         src="/curtain-open-C9MqdT6G.jpg"
         alt="Background"
         fill
+        sizes="100vw"
         className="absolute inset-0 w-full h-full object-cover z-1"
-        priority
       />
 
       {/* 
@@ -94,7 +106,7 @@ export default function HeroSection() {
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 z-3 ${isVideoFinished ? "opacity-0 pointer-events-none" : "opacity-100"
           }`}
         playsInline
-        preload="auto"
+        preload="none"
         onEnded={handleVideoEnded}
       >
         <source src="/curtain-video-BAKLj3Y5.mp4" type="video/mp4" />

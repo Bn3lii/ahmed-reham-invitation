@@ -16,10 +16,9 @@ export default function AudioPlayer() {
     audioEl.addEventListener("play", handlePlay);
     audioEl.addEventListener("pause", handlePause);
 
-    // Attempt to auto-play on mount, though browsers often block this
-    audioEl.play().catch((err) => {
-      console.log("Autoplay blocked, user interaction required:", err);
-    });
+    // No autoplay attempt on mount: browsers block it anyway, and it would
+    // download the whole track while the hero is still loading.
+    // HeroSection starts playback on the "Open Invitation" click instead.
 
     return () => {
       audioEl.removeEventListener("play", handlePlay);
@@ -39,7 +38,7 @@ export default function AudioPlayer() {
 
   return (
     <>
-      <audio ref={audioRef} src="/newone.mp3" loop preload="auto" />
+      <audio ref={audioRef} src="/newone.mp3" loop preload="none" />
       <div className="fixed bottom-6 right-6 z-50 transition-opacity duration-500">
         <button
           onClick={togglePlay}
