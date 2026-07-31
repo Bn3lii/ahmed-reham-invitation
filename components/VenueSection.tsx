@@ -15,7 +15,7 @@ export default function VenueSection() {
       <div className="w-full max-w-md mx-auto rounded-3xl overflow-hidden shadow-[0_10px_30px_-12px_rgba(92,32,24,0.25)] bg-secondary">
         <div className="relative w-full aspect-4/3">
           <Image
-            src="/place-new-one.jpg"
+            src="/place-new-one-v2.jpg"
             alt="Al Loaloaa Village Halls"
             fill
             sizes="(max-width: 640px) 100vw, 28rem"

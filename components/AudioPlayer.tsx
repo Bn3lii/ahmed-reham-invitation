@@ -38,7 +38,7 @@ export default function AudioPlayer() {
 
   return (
     <>
-      <audio ref={audioRef} src="/newone.mp3" loop preload="none" />
+      <audio ref={audioRef} src="/newone-v2.mp3" loop preload="none" />
       <div className="fixed bottom-6 right-6 z-50 transition-opacity duration-500">
         <button
           onClick={togglePlay}

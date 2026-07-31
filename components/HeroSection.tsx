@@ -75,7 +75,7 @@ export default function HeroSection() {
         It sits behind the intro button but in front of everything else.
       */}
       <Image
-        src="/curtain-closed-Bpkadld4.jpg"
+        src="/curtain-closed-v2.jpg"
         alt="Closed Curtain"
         fill
         sizes="100vw"
@@ -90,7 +90,7 @@ export default function HeroSection() {
         So when the video fades out, this is exactly what's behind it.
       */}
       <Image
-        src="/curtain-open-C9MqdT6G.jpg"
+        src="/curtain-open-v2.jpg"
         alt="Background"
         fill
         sizes="100vw"
@@ -109,7 +109,7 @@ export default function HeroSection() {
         preload="none"
         onEnded={handleVideoEnded}
       >
-        <source src="/curtain-video-BAKLj3Y5.mp4" type="video/mp4" />
+        <source src="/curtain-video-v2.mp4" type="video/mp4" />
       </video>
 
       {/* 3. Intro Button (Sits on top of closed video curtain) */}
