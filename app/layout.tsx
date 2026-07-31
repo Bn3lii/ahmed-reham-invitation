@@ -20,9 +20,29 @@ const bodyFont = Raleway({
   weight: ["300", "400", "500"],
 });
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "https://ahmed-reham-invitation-taupe.vercel.app");
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Ahmed & Reham Wedding",
-  description: "Ahmed & Reham Wedding invitation",
+  description: "حضوركم شرف لنا — الأحد ٢ أغسطس ٢٠٢٦، قرية اللؤلؤة، الفيوم",
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    siteName: "Ahmed & Reham Wedding",
+    title: "Ahmed & Reham Wedding",
+    description: "حضوركم شرف لنا — الأحد ٢ أغسطس ٢٠٢٦، قرية اللؤلؤة، الفيوم",
+    locale: "ar_EG",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ahmed & Reham Wedding",
+    description: "حضوركم شرف لنا — الأحد ٢ أغسطس ٢٠٢٦، قرية اللؤلؤة، الفيوم",
+  },
 };
 
 export default function RootLayout({
