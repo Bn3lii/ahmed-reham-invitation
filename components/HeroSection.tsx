@@ -7,6 +7,7 @@ export default function HeroSection() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isVideoFinished, setIsVideoFinished] = useState(false);
+  const [showText, setShowText] = useState(false);
   const [curtainLoaded, setCurtainLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -56,9 +57,20 @@ export default function HeroSection() {
     }
   };
 
+  // Start revealing the text just before the curtain finishes opening, so it is
+  // already fading in as the video ends instead of waiting for it.
+  const handleTimeUpdate = () => {
+    const videoEl = videoRef.current;
+    if (!videoEl || !videoEl.duration) return;
+    if (videoEl.duration - videoEl.currentTime <= 0.8) {
+      setShowText(true);
+    }
+  };
+
   const handleVideoEnded = () => {
     setIsVideoPlaying(false);
     setIsVideoFinished(true);
+    setShowText(true);
   };
 
   const handleScrollDown = () => {
@@ -103,10 +115,11 @@ export default function HeroSection() {
       */}
       <video
         ref={videoRef}
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 z-3 ${isVideoFinished ? "opacity-0 pointer-events-none" : "opacity-100"
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-3 ${isVideoFinished ? "opacity-0 pointer-events-none" : "opacity-100"
           }`}
         playsInline
         preload="none"
+        onTimeUpdate={handleTimeUpdate}
         onEnded={handleVideoEnded}
       >
         <source src="/curtain-video-v2.mp4" type="video/mp4" />
@@ -129,7 +142,7 @@ export default function HeroSection() {
       )}
 
       {/* 4. Final Text Overlay (Shown after curtain opens) */}
-      <div className={`absolute inset-0 z-2 flex flex-col transition-all duration-1000 ${isVideoFinished ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+      <div className={`absolute inset-0 z-4 flex flex-col transition-all duration-500 ${showText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
         }`}>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="flex flex-col items-center text-center max-w-[55%] md:max-w-[45%] lg:max-w-[40%] px-4 pt-4">
