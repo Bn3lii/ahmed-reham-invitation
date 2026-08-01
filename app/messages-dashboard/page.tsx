@@ -26,12 +26,14 @@ export default async function MessagesDashboard() {
             messages.map((msg) => (
               <div
                 key={msg._id.toString()}
-                className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-primary/10"
+                className="min-w-0 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-primary/10"
               >
-                <h3 className="font-semibold text-xl text-primary mb-3">
+                <h3 className="font-semibold text-xl text-primary mb-3 wrap-anywhere">
                   {msg.name}
                 </h3>
-                <p className="text-primary/80 whitespace-pre-wrap leading-relaxed">
+                {/* wrap-anywhere so an unbroken run (long URL, emoji wall) can't
+                    widen the card past the viewport */}
+                <p className="text-primary/80 whitespace-pre-wrap wrap-anywhere leading-relaxed">
                   {msg.message}
                 </p>
                 <div className="mt-6 pt-4 border-t border-primary/5 flex justify-end">
