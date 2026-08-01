@@ -2,6 +2,11 @@
 
 import { useEffect, useState } from "react";
 
+// 9 PM on the wedding day, Cairo time. The +03:00 offset is written out so the
+// countdown ends at the same real moment for guests in any timezone — Egypt is
+// on EEST (UTC+3) in August.
+const TARGET_TIME = new Date("2026-08-02T21:00:00+03:00").getTime();
+
 export default function CountdownSection() {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -11,22 +16,29 @@ export default function CountdownSection() {
   });
 
   useEffect(() => {
-    const targetDate = new Date("2026-08-02T00:00:00").getTime();
+    // Returns false once the big day arrives, so the interval can stop.
+    const tick = () => {
+      const difference = TARGET_TIME - Date.now();
+
+      if (difference <= 0) {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        return false;
+      }
+
+      setTimeLeft({
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((difference % (1000 * 60)) / 1000)
+      });
+      return true;
+    };
+
+    // Run once up front so the numbers aren't stuck on 00 for the first second.
+    if (!tick()) return;
 
     const interval = setInterval(() => {
-      const now = new Date().getTime();
-      const difference = targetDate - now;
-
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((difference % (1000 * 60)) / 1000)
-        });
-      } else {
-        clearInterval(interval);
-      }
+      if (!tick()) clearInterval(interval);
     }, 1000);
 
     return () => clearInterval(interval);
