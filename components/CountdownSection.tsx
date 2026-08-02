@@ -10,6 +10,15 @@ const CONFETTI_COLORS = ["#5C2018", "#8B3A2F", "#C4756A", "#D4A59A", "#FAF8F5"];
 // on EEST (UTC+3) in August.
 const TARGET_TIME = new Date("2026-08-02T21:00:00+03:00").getTime();
 
+// Midnight closes the night out. After this the section turns into a keepsake
+// instead of still claiming the celebration is on.
+const CELEBRATION_END = new Date("2026-08-03T00:00:00+03:00").getTime();
+
+type Phase = "before" | "during" | "after";
+
+const phaseAt = (now: number): Phase =>
+  now < TARGET_TIME ? "before" : now < CELEBRATION_END ? "during" : "after";
+
 export default function CountdownSection() {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -17,45 +26,51 @@ export default function CountdownSection() {
     minutes: 0,
     seconds: 0
   });
-  const [hasStarted, setHasStarted] = useState(false);
+  const [phase, setPhase] = useState<Phase>("before");
   const hasCelebrated = useRef(false);
 
   useEffect(() => {
-    // Returns false once the big day arrives, so the interval can stop.
     const tick = () => {
-      const difference = TARGET_TIME - Date.now();
+      const now = Date.now();
+      const current = phaseAt(now);
+      setPhase(current);
 
-      if (difference <= 0) {
+      if (current === "before") {
+        const difference = TARGET_TIME - now;
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((difference % (1000 * 60)) / 1000)
+        });
+      } else {
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        setHasStarted(true);
-        return false;
       }
 
-      setTimeLeft({
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-        minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-        seconds: Math.floor((difference % (1000 * 60)) / 1000)
-      });
-      return true;
+      return current;
     };
 
     // Run once up front so the numbers aren't stuck on 00 for the first second.
-    if (!tick()) {
-      // Already past the start time on arrival — no confetti here, RevealSection
-      // already greets these guests with its own.
+    const initial = tick();
+
+    if (initial !== "before") {
+      // Arrived after the countdown already ran out — no confetti here,
+      // RevealSection already greets these guests with its own.
       hasCelebrated.current = true;
-      return;
     }
+    if (initial === "after") return;
 
     const interval = setInterval(() => {
-      if (tick()) return;
+      const current = tick();
 
-      clearInterval(interval);
-      if (hasCelebrated.current) return;
-      hasCelebrated.current = true;
+      if (current === "after") {
+        clearInterval(interval);
+        return;
+      }
+      if (current !== "during" || hasCelebrated.current) return;
 
       // Someone is watching the moment it hits zero — give them a send-off.
+      hasCelebrated.current = true;
       const end = Date.now() + 3000;
       const frame = () => {
         confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: CONFETTI_COLORS });
@@ -70,18 +85,12 @@ export default function CountdownSection() {
 
   return (
     <section className="py-12 bg-white flex flex-col items-center justify-center px-8">
-      {hasStarted ? (
+      {phase === "during" && (
         <div className="flex flex-col items-center text-center">
           <h2 className="font-script text-5xl md:text-6xl mb-4 text-primary">
             Today is the Day
           </h2>
-          <div className="flex items-center gap-3 mb-5">
-            <span className="block w-12 h-px bg-primary/40" />
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-primary">
-              <path d="M12 21s-7.5-4.9-9.4-9A5.3 5.3 0 0 1 12 6.6a5.3 5.3 0 0 1 9.4 5.4C19.5 16.1 12 21 12 21Z" />
-            </svg>
-            <span className="block w-12 h-px bg-primary/40" />
-          </div>
+          <Ornament />
           <p className="font-display text-xl md:text-2xl text-primary">
             The celebration has begun
           </p>
@@ -89,7 +98,24 @@ export default function CountdownSection() {
             Al Loaloaa Village — we can&apos;t wait to see you
           </p>
         </div>
-      ) : (
+      )}
+
+      {phase === "after" && (
+        <div className="flex flex-col items-center text-center">
+          <h2 className="font-script text-5xl md:text-6xl mb-4 text-primary">
+            Just Married
+          </h2>
+          <Ornament />
+          <p className="font-script text-3xl md:text-4xl text-primary">
+            Ahmed &amp; Reham
+          </p>
+          <p className="font-body text-xs tracking-[0.2em] uppercase mt-4 text-primary/70">
+            August 2, 2026
+          </p>
+        </div>
+      )}
+
+      {phase === "before" && (
         <>
           <div className="text-center mb-10">
             <h2 className="font-script text-4xl md:text-5xl mb-2 text-primary">Countdown</h2>
@@ -106,6 +132,18 @@ export default function CountdownSection() {
         </>
       )}
     </section>
+  );
+}
+
+function Ornament() {
+  return (
+    <div className="flex items-center gap-3 mb-5">
+      <span className="block w-12 h-px bg-primary/40" />
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-primary">
+        <path d="M12 21s-7.5-4.9-9.4-9A5.3 5.3 0 0 1 12 6.6a5.3 5.3 0 0 1 9.4 5.4C19.5 16.1 12 21 12 21Z" />
+      </svg>
+      <span className="block w-12 h-px bg-primary/40" />
+    </div>
   );
 }
 
